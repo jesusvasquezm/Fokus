@@ -6,18 +6,22 @@ const bannerImg = document.querySelector('.app__image');
 const title = document.querySelector('.app__title');
 const allBtns = document.querySelectorAll('.app__card-button');
 const musicInput = document.getElementById('alternar-musica');
+const playBtn = document.getElementById('start-pause');
 const music = new Audio('sons/luna-rise-part-one.mp3');
+let counter = 5;
+let interval = null;
 music.loop = true;
 
-musicInput.addEventListener('change', () =>{
-    if(music.paused){
+musicInput.addEventListener('change', () => {
+    if (music.paused) {
         music.play();
-    }else{
+    } else if (music.play) {
+        music.pause();
+    }
+    else {
         music.paused;
     }
-}
-
-)
+})
 
 focoBtn.addEventListener('click', () => {
     changedContext('foco')
@@ -33,6 +37,8 @@ longoBtn.addEventListener('click', () => {
     changedContext('descanso-longo')
     longoBtn.classList.add('active')
 })
+
+
 
 function changedContext(context) {
     allBtns.forEach(function (context) {
@@ -60,4 +66,28 @@ function changedContext(context) {
         default:
             break;
     }
+}
+
+
+const regressiveCounter = () => {
+    if(counter <=0){
+        zerar()
+        alert("Finalizado")
+        return;
+    }
+    counter -= 1;
+    console.log('Temporizador ' + counter);
+}
+playBtn.addEventListener('click', timer())
+function timer() {
+    if(interval){
+        zerar()
+        return
+    }
+    interval = setInterval(regressiveCounter, 1000)
+}
+
+function zerar(){
+    clearInterval(interval);
+    interval = null;
 }
