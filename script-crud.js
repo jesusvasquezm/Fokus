@@ -17,5 +17,5 @@ formAddTask.addEventListener('submit', (event) => {
         description : textArea.value
     }
     taskList.push(task)
-    localStorage.setItem('task', taskList);
+    localStorage.setItem('task', JSON.stringify(taskList)); //o JSON. stringify transforma o conteudo da taskList numa string
 })
