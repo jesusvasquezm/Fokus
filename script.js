@@ -7,11 +7,18 @@ const title = document.querySelector('.app__title');
 const allBtns = document.querySelectorAll('.app__card-button');
 const musicInput = document.getElementById('alternar-musica');
 const playBtn = document.getElementById('start-pause');
+const startOrPauseTbn = document.querySelector('#start-pause span');
+const startOrPauseIcon = document.querySelector('.app__card-primary-butto-icon');
+const timeOnScreen = document.getElementById('timer');
+
+
 const music = new Audio('sons/luna-rise-part-one.mp3');
 const beep = new Audio('sons/beep.mp3');
 const pause = new Audio('sons/pause.mp3');
 const play = new Audio('sons/play.wav');
-let counter = 5;
+
+
+let counter = 1500;
 let interval = null;
 music.loop = true;
 
@@ -27,16 +34,19 @@ musicInput.addEventListener('change', () => {
 })
 
 focoBtn.addEventListener('click', () => {
+    counter = 1500;
     changedContext('foco')
     focoBtn.classList.add('active');
 });
 
 curtoBtn.addEventListener('click', () => {
+    counter = 300;
     changedContext('descanso-curto')
     curtoBtn.classList.add('active')
 })
 
 longoBtn.addEventListener('click', () => {
+    counter = 900;
     changedContext('descanso-longo')
     longoBtn.classList.add('active')
 })
@@ -44,6 +54,7 @@ longoBtn.addEventListener('click', () => {
 
 
 function changedContext(context) {
+    showTime();
     allBtns.forEach(function (context) {
         context.classList.remove('active')
     })
@@ -74,13 +85,13 @@ function changedContext(context) {
 
 const regressiveCounter = () => {
     if(counter <=0){
-        beep.play();
+       // beep.play();
         alert("Finalizado");
         zerar();
         return;
     }
     counter -= 1;
-    console.log('Temporizador ' + counter);
+    showTime();
 }
 playBtn.addEventListener('click', timer)
 
@@ -92,9 +103,21 @@ function timer() {
     }
     play.play();
     interval = setInterval(regressiveCounter, 1000)
+    startOrPauseTbn.textContent = "Pausar";
+    startOrPauseIcon.setAttribute('src', '/imagens/pause.png');
 }
 
 function zerar(){
     clearInterval(interval);
+    startOrPauseTbn.textContent = "Começar";
+    startOrPauseIcon.setAttribute('src','/imagens/play_arrow.png');
     interval = null;
 }
+
+function showTime() {
+    const time = new Date(counter * 1000);
+    const formattedTime = time.toLocaleTimeString('pt-BR', {minute: "2-digit", second: "2-digit"});
+    timeOnScreen.innerHTML = `${formattedTime}`;
+}
+
+showTime();
