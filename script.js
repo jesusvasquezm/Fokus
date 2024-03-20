@@ -8,6 +8,9 @@ const allBtns = document.querySelectorAll('.app__card-button');
 const musicInput = document.getElementById('alternar-musica');
 const playBtn = document.getElementById('start-pause');
 const music = new Audio('sons/luna-rise-part-one.mp3');
+const beep = new Audio('sons/beep.mp3');
+const pause = new Audio('sons/pause.mp3');
+const play = new Audio('sons/play.wav');
 let counter = 5;
 let interval = null;
 music.loop = true;
@@ -71,19 +74,23 @@ function changedContext(context) {
 
 const regressiveCounter = () => {
     if(counter <=0){
-        zerar()
-        alert("Finalizado")
+        beep.play();
+        alert("Finalizado");
+        zerar();
         return;
     }
     counter -= 1;
     console.log('Temporizador ' + counter);
 }
-playBtn.addEventListener('click', timer())
+playBtn.addEventListener('click', timer)
+
 function timer() {
     if(interval){
-        zerar()
-        return
+        pause.play();
+        zerar();
+        return;
     }
+    play.play();
     interval = setInterval(regressiveCounter, 1000)
 }
 
