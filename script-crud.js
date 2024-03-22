@@ -3,8 +3,15 @@ const addNewTaskBtn = document.querySelector('.app__button--add-task');
 const formAddTask = document.querySelector('.app__form-add-task');
 const textArea = document.querySelector('.app__form-textarea');
 const ulTask = document.querySelector('.app__section-task-list');
+const cancelBtn = document.querySelector('.app__form-footer__button--cancel');
 
 const taskList = JSON.parse(localStorage.getItem('tasks')) || [];
+
+
+
+function updateTask() {
+    localStorage.setItem('tasks', JSON.stringify(taskList)); //o JSON. stringify transforma o conteudo da taskList numa string
+}
 
 function createTaskElement(task) {
     //Criei uma li e adicionei uma classe a ela.
@@ -29,12 +36,34 @@ function createTaskElement(task) {
     imgBtn.setAttribute('src', '/imagens/edit.png');
     button.append(imgBtn);
 
+    button.onclick = () => {
+        debugger
+        const newDescription = prompt("Nome da nova tarefa: ");
+        console.log("Nova tarefa: " + newDescription);
+        if(newDescription){
+            paragraph.textContent = newDescription;
+            task.description = newDescription;
+            updateTask();
+        }
+        
+    }
+
     li.append(svg);
     li.append(paragraph);
     li.append(button);
 
     return li;
 }
+
+const cancelTaskElement = () => {
+    textArea.value = '';
+    formAddTask.classList.toggle('hidden');
+}
+
+
+
+
+cancelBtn.addEventListener('click', cancelTaskElement);
 
 addNewTaskBtn.addEventListener('click', () => {
     formAddTask.classList.toggle('hidden');
@@ -50,7 +79,7 @@ formAddTask.addEventListener('submit', (event) => {
     taskList.push(task)
     const taskElement = createTaskElement(task);
     ulTask.append(taskElement);
-    localStorage.setItem('tasks', JSON.stringify(taskList)); //o JSON. stringify transforma o conteudo da taskList numa string
+    updateTask();
     textArea.value = '';
     formAddTask.classList.add('hidden');
 })
